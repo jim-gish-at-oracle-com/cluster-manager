@@ -18,8 +18,8 @@ build:
         code: |
           make clean check build-local
           # what's in WERCKER_OUTPUT_DIR now?
-          mv bin $WERCKER_OUTPUT_DIR
-          cd $WERCKER_OUTPUT_DIR/bin/linux
+          mv bin/linux/cluster-manager $WERCKER_OUTPUT_DIR/.
+          cd $WERCKER_OUTPUT_DIR
           ls -la
 
     # code coverage
@@ -31,7 +31,8 @@ build:
           make coverhtml
 
   after-steps:
-    - internal/docker-push:
-         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
-         working-dir: /pipeline/source
-         entrypoint: /cluster-manager
+    - internal/docker-scratch-push:
+         tag: $WERCKER_GIT_COMMIT
+         working-dir: ""
+         entrypoint: "/bin/sh -c /cluster-manager"
+

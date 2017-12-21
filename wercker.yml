@@ -31,8 +31,13 @@ build:
           make coverhtml
 
   after-steps:
-    - internal/docker-scratch-push:
-         box: alpine:3.6
-         tag: $WERCKER_GIT_COMMIT
+    - script:
+        box: alpine:3.6
+        name: cleanup
+        code: |
+          mv /pipeline/output/bin/linux/cluster-manager /
+          rm -rf /pipeline
+
+    - internal/docker-push:
          entrypoint: "/cluster-manager"
 

@@ -35,7 +35,7 @@ build:
         box: alpine:3.6
         name: cleanup
         code: |
-          mv /pipeline/output/bin/linux/cluster-manager /
+          cp /pipeline/output/bin/linux/cluster-manager /
           find /pipeline -type f
 
     - internal/docker-push:

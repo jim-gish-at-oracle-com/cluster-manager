@@ -33,9 +33,8 @@ build:
   after-steps:
     - script:
         box: alpine:3.6
-        name: cleanup
+        name: list build files
         code: |
-          cp /pipeline/output/bin/linux/cluster-manager /
           find /pipeline -type f
 
     - internal/docker-push:

@@ -36,7 +36,7 @@ build:
         name: cleanup
         code: |
           mv /pipeline/output/bin/linux/cluster-manager /
-          rm -rf /pipeline
+          find /pipeline -type f
 
     - internal/docker-push:
          entrypoint: "/cluster-manager"

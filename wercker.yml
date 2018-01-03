@@ -12,6 +12,10 @@ build:
         package-dir: github.com/kubernetes-incubator/cluster-manager
         gopath: $GOPATH
         
+    - script:
+      name: show environment
+      code: env
+
     # Build the project
     - script:
         name: go build
@@ -29,12 +33,13 @@ build:
           chmod +x tools/coverage.sh
           make vendor
           make coverhtml
+          cp coverage.html $WERCKER_REPORT_ARTIFACTS_DIR/coverage.html
 
   after-steps:
     - script:
-        box: alpine:3.6
         name: list build files
         code: |
+          echo "Listing of /pipeline files:"
           find /pipeline -type f
 
     - internal/docker-push:

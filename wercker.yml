@@ -22,7 +22,7 @@ build:
         code: |
           make clean check build-local
           # what's in WERCKER_OUTPUT_DIR now?
-          mv bin/linux/cluster-manager $WERCKER_OUTPUT_DIR/.
+          cp bin/linux/cluster-manager $WERCKER_OUTPUT_DIR/.
           cd $WERCKER_OUTPUT_DIR
           ls -la
 
@@ -35,13 +35,10 @@ build:
           make coverhtml
           cp coverage.html $WERCKER_REPORT_ARTIFACTS_DIR/coverage.html
 
-  after-steps:
-    - script:
-        name: list build files
-        code: |
-          echo "Listing of /pipeline files:"
-          find /pipeline -type f
-
-    - internal/docker-push:
-         entrypoint: "/cluster-manager"
+deploy:
+  box: alpine:3.6
+  steps:
+    - internal/docker-scratch-push:
+         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+         cmd: "./cluster-manager"
 
